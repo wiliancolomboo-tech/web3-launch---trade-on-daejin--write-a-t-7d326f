@@ -1,0 +1,33 @@
+{
+  "name": "@daejin/market-orchestrator",
+  "version": "1.0.0",
+  "description": "Production Orchestration CLI for Daejin Markets on Solana",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "launch": "ts-node src/cli.ts launch",
+    "trade": "ts-node src/cli.ts trade",
+    "start:daemon": "ts-node src/daemon.ts",
+    "test": "mocha -r ts-node/register 'tests/**/*.ts' --timeout 60000"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.30.1",
+    "@solana/spl-token": "^0.4.8",
+    "@solana/web3.js": "^1.95.3",
+    "axios": "^1.7.4",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "pino": "^9.3.2",
+    "pino-pretty": "^11.2.2",
+    "resend": "^3.5.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.16",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "^20.14.11",
+    "chai": "^4.3.7",
+    "mocha": "^10.7.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}

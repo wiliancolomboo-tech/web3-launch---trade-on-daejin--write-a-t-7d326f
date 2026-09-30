@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  daejin-market-daemon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daejin-market-daemon
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - PROGRAM_ID=Daej1nMarketEng1ne111111111111111111111111111
+      - DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/your/webhook/url
+      - SLACK_WEBHOOK_URL=https://hooks.slack.com/services/your/slack/webhook
+      - RESEND_API_KEY=re_123456789abcdef
+      - ADMIN_ALERT_EMAIL=ops@daejin.finance
+    volumes:
+      - ./keys:/usr/src/app/keys:ro

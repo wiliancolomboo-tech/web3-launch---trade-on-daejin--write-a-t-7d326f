@@ -1,0 +1,30 @@
+flowchart TD
+    subgraph ClientLayer["Enterprise Automation & Execution Layer"]
+        A[Market Operator / CLI Daemon] -->|1. Generate Keypairs & Metadata| B[Market Creator Agent]
+        B -->|2. Provision SPL Tokens| C[SPL Token Program / Token-2022]
+        B -->|3. Submit InitializeMarket IX| D[Solana RPC Gateway / Jito Relayer]
+    end
+
+    subgraph SolanaCluster["Solana On-Chain Program (Daejin Core)"]
+        D -->|4. Verify Signers & Seeds| E[Daejin Market Program]
+        E -->|5. Initialize Vaults & Mints| F[(Market PDA Account)]
+        F --> G[(Vault Token A - Base)]
+        F --> H[(Vault Token B - Quote / USDC)]
+        F --> I[(LP Mint PDA)]
+        
+        J[Trader / Arbitrage Bot] -->|6. Execute Swap IX| E
+        E -->|7. Mathematical Curve Verification| K{Slippage & Balance Check}
+        K -->|Pass| L[Update Reserves & Transfer SPL]
+        K -->|Fail| M[Revert Anchor ErrorCode]
+        
+        N[Protocol Authority] -->|8. Resolve / Settle Market| E
+        E -->|9. Disburse Winnings / Collect Fees| O[(Protocol Fee Treasury)]
+    end
+
+    subgraph EnterpriseRelay["Observability & Alerting Engine"]
+        E -.->|Emit MarketInitialized / SwapExecuted Events| P[WebSocket Geyser / RPC Subscriptions]
+        P -->|Stream Logs| Q[Enterprise Notification Engine]
+        Q -->|Webhook POST| R[Discord / Slack Channels]
+        Q -->|REST API| S[Resend Email Alerts]
+        Q -->|Prometheus Metrics| T[Grafana Dashboard]
+    end
