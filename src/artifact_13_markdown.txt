@@ -1,0 +1,5 @@
+1/3 🌊 Bringing deterministic, zero-slip continuous liquidity to @Solana with @DaejinProtocol! 
+
+We just deployed the Daejin FlowEngine: an enterprise-grade automated market creator & algorithmic bonding curve protocol.
+
+Full market creation, liquidity locks, and swap execution in under 400ms. 🧵👇

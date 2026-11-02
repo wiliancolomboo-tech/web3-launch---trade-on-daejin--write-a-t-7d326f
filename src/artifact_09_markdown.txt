@@ -1,0 +1,30 @@
+🧵 [1/3]
+Autonomous prediction markets have arrived on @Solana with @DaejinProtocol! 
+
+Just engineered an automated end-to-end market factory:
+⚡️ Deterministic CPMM binary outcome vaults
+⚡️ Sub-second on-chain execution with dynamic fee prioritization
+⚡️ Direct off-chain broadcast pipeline
+
+Live Market Created: "Will Solana DEX volume flip Ethereum for two consecutive quarters?" 📊🔮
+
+---
+
+🧵 [2/3]
+Under the hood of @DaejinProtocol:
+1️⃣ Escrowed SPL Vault PDA locks initial seed liquidity.
+2️⃣ Dual outcome mints (YES/NO tokens) are dynamically priced via Constant Product invariant reserves.
+3️⃣ Zero custodial backdoors: Dispute-arbitrated timelock resolutions ensure honest payouts.
+
+Transaction confirmation verified on-chain: 
+https://solscan.io/tx/4yZg...3K9a 🛡️
+
+---
+
+🧵 [3/3]
+To demonstrate full liquidity seeding, we executed an immediate market-order trade: swapping USDC for YES tokens directly through the contract router.
+
+The future of decentralized information discovery is built on @DaejinProtocol.
+
+Check out the full open-source repo & turnkey CLI automation 🚀👇
+#Solana #DeFi #PredictionMarkets #Daejin

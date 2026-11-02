@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  daejin-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - DAEJIN_PROGRAM_ID=Daej1nMarketLauncher111111111111111111111111
+      - TWITTER_API_KEY=${TWITTER_API_KEY}
+      - TWITTER_API_SECRET=${TWITTER_API_SECRET}
+      - TWITTER_ACCESS_TOKEN=${TWITTER_ACCESS_TOKEN}
+      - TWITTER_ACCESS_SECRET=${TWITTER_ACCESS_SECRET}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+    volumes:
+      - ./keys:/usr/src/app/keys:ro
+    command: ["create-and-trade", "-b", "BaseMintPubkeyGoesHere1111111111111111111111", "-q", "So11111111111111111111111111111111111111112", "-k", "/usr/src/app/keys/id.json", "-s", "DAEJIN"]

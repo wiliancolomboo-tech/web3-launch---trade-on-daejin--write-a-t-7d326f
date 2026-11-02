@@ -1,0 +1,4 @@
+SOLANA_RPC_URL=https://your-helius-or-triton-node.solana.com
+   SOLANA_KEYPAIR_SECRET="[12,45,233,...]"
+   TWITTER_BEARER_TOKEN="AAAAAAAAAAAAAAAAAAAA..."
+   DISCORD_WEBHOOK_URL="https://api.example.com/webhooks/alerts/placeholder"

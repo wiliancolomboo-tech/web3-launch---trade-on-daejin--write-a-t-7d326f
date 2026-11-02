@@ -1,0 +1,7 @@
+SOLANA_RPC_URL="https://api.devnet.solana.com"
+CREATOR_SECRET_KEY="[12,45,231,...,78]"
+PROGRAM_ID="Daej1nMarket1111111111111111111111111111111"
+DISCORD_WEBHOOK_URL="https://api.example.com/webhooks/alerts/placeholder"
+RESEND_API_KEY="re_123456789"
+ALERT_EMAIL="founder@enterprise.io"
+PORT=8080

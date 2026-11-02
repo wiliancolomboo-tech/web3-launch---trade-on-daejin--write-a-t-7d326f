@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  daejin-market-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daejin_market_worker
+    restart: always
+    environment:
+      - SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+      - PROGRAM_ID=Daejin1111111111111111111111111111111111111
+      - CREATOR_KEYPAIR_PATH=/secrets/id.json
+      - ORACLE_PUBLIC_KEY=8vFhvh6yG4s9q3mY44oFvGjEomfR1V3D7gPzJ1X3yqP1
+      - COLLATERAL_MINT=EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v
+      - TWITTER_API_KEY=${TWITTER_API_KEY}
+      - TWITTER_API_SECRET=${TWITTER_API_SECRET}
+      - TWITTER_ACCESS_TOKEN=${TWITTER_ACCESS_TOKEN}
+      - TWITTER_ACCESS_SECRET=${TWITTER_ACCESS_SECRET}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+    volumes:
+      - ./secrets:/secrets:ro
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "node -e 'console.log(process.uptime())'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

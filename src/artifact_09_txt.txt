@@ -1,0 +1,9 @@
+1/3 🚀 Bringing hyper-scale liquidity to @DaejinProtocol on #Solana!
+
+We just deployed the Autonomous Market Creation & Trading Agent on Daejin. 
+
+⚡ Instant PDA escrow vaults
+⚡ Algorithmic CPMM bonding pricing
+⚡ Automated Twitter & Discord telemetry
+
+A quick look at the architecture 🧵👇

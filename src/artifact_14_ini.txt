@@ -1,0 +1,12 @@
+SOLANA_RPC_URL=https://api.devnet.solana.com
+WALLET_KEYPAIR_PATH=./deployer-keypair.json
+PROGRAM_ID=Daej1n1111111111111111111111111111111111111
+
+# Twitter / X API v2 Credentials
+TWITTER_API_KEY=your_twitter_api_key
+TWITTER_API_SECRET=your_twitter_api_secret
+TWITTER_ACCESS_TOKEN=your_user_access_token
+TWITTER_ACCESS_SECRET=your_user_access_token_secret
+
+# Enterprise Slack / Discord Notifications
+SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder

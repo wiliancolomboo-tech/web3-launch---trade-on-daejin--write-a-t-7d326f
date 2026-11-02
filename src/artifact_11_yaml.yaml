@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   daejin-market-daemon:
@@ -6,16 +6,18 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: daejin-market-daemon
-    restart: unless-stopped
+    restart: always
+    environment:
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - PROGRAM_ID=Daej1nMarket11111111111111111111111111111111
+      - WALLET_KEYPAIR_PATH=/secrets/id.json
+      - ENTERPRISE_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+    volumes:
+      - ./secrets:/secrets:ro
     ports:
       - "8080:8080"
-    environment:
-      - PORT=8080
-      - SOLANA_RPC_URL=https://api.devnet.solana.com
-      - PROGRAM_ID=Daej1nMarketEng1ne111111111111111111111111111
-      - DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/your/webhook/url
-      - SLACK_WEBHOOK_URL=https://hooks.slack.com/services/your/slack/webhook
-      - RESEND_API_KEY=re_123456789abcdef
-      - ADMIN_ALERT_EMAIL=ops@daejin.finance
-    volumes:
-      - ./keys:/usr/src/app/keys:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

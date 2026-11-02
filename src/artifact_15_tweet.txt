@@ -1,0 +1,5 @@
+3/3 🔮 Daejin is transforming how prediction markets are launched and seeded on Solana. No manual escrow friction, no fragmented liquidity.
+
+Liquidity providers can seed, trade YES/NO outcomes, and redeem trustlessly.
+
+Built for the @DaejinProtocol hackathon bounty! 🚀 #Solana #DeFi #Daejin

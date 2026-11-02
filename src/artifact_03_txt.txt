@@ -1,0 +1,11 @@
++-----------------------------------------------------------------------------------+
+|                            DAEJIN TOPOLOGY MATRIX                                 |
++--------------------------+-----------------------+--------------------------------+
+| Subsystem                | Protocol/Interface    | SLA / Guarantee                |
++--------------------------+-----------------------+--------------------------------+
+| Program Core             | Solana BPF / Anchor   | Deterministic, Non-custodial   |
+| Quote Vault              | SPL Token Program     | PDA Owned, Multisig Controlled |
+| Base Token Vault         | SPL Token Program     | PDA Owned, Checked Math        |
+| Telemetry Ingestion      | Solana WebSocket RPC  | Sub-slot latency (<400ms)      |
+| Enterprise Notifier      | HTTPS POST (REST)     | Retried with Exponential Backoff|
++--------------------------+-----------------------+--------------------------------+

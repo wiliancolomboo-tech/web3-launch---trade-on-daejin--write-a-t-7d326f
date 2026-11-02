@@ -1,285 +1,201 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer, MintTo, Burn};
+use anchor_spl::token::{self, Mint, Token, TokenAccount, Transfer};
 
-declare_id!("Daej1nMarketEng1ne111111111111111111111111111");
+declare_id!("Daej1nMarketLauncher111111111111111111111111");
+
+pub const MARKET_SEED: &[u8] = b"market";
+pub const AUTHORITY_SEED: &[u8] = b"authority";
+pub const FEE_DENOMINATOR: u64 = 10_000; // Basis points (100 bps = 1%)
 
 #[program]
-pub mod daejin_engine {
+pub mod daejin_market {
     use super::*;
 
-    /// Initialize a new trading market on Daejin with base/quote vaults and LP token mint.
-    pub fn initialize_market(
-        ctx: Context<InitializeMarket>,
-        market_id: u64,
+    /// Initializes a new Daejin Market and atomically deposits initial liquidity.
+    pub fn initialize_and_seed_market(
+        ctx: Context<InitializeAndSeedMarket>,
+        base_amount_in: u64,
+        quote_amount_in: u64,
         fee_bps: u16,
     ) -> Result<()> {
-        require!(fee_bps <= 1000, DaejinError::FeeTooHigh); // Max 10% fee
+        require!(base_amount_in > 0, DaejinError::ZeroInitialLiquidity);
+        require!(quote_amount_in > 0, DaejinError::ZeroInitialLiquidity);
+        require!(fee_bps <= 1000, DaejinError::FeeExceedsMaximum); // Max 10%
 
         let market = &mut ctx.accounts.market;
-        market.authority = ctx.accounts.authority.key();
-        market.market_id = market_id;
-        market.mint_a = ctx.accounts.mint_a.key();
-        market.mint_b = ctx.accounts.mint_b.key();
-        market.vault_a = ctx.accounts.vault_a.key();
-        market.vault_b = ctx.accounts.vault_b.key();
-        market.lp_mint = ctx.accounts.lp_mint.key();
+        market.creator = ctx.accounts.creator.key();
+        market.base_mint = ctx.accounts.base_mint.key();
+        market.quote_mint = ctx.accounts.quote_mint.key();
+        market.base_vault = ctx.accounts.base_vault.key();
+        market.quote_vault = ctx.accounts.quote_vault.key();
         market.fee_bps = fee_bps;
-        market.is_settled = false;
-        market.winning_side = 0;
+        market.total_base_shares = base_amount_in;
+        market.total_quote_shares = quote_amount_in;
         market.bump = ctx.bumps.market;
-        market.vault_a_bump = ctx.bumps.vault_a;
-        market.vault_b_bump = ctx.bumps.vault_b;
-        market.lp_bump = ctx.bumps.lp_mint;
+        market.authority_bump = ctx.bumps.market_authority;
+        market.created_at = Clock::get()?.unix_timestamp;
 
-        emit!(MarketInitialized {
-            market_id,
-            market: market.key(),
-            authority: market.authority,
-            mint_a: market.mint_a,
-            mint_b: market.mint_b,
-            fee_bps,
-            timestamp: Clock::get()?.unix_timestamp,
-        });
-
-        Ok(())
-    }
-
-    /// Deposit seed liquidity into the Daejin market to bootstrap trading.
-    pub fn deposit_liquidity(
-        ctx: Context<DepositLiquidity>,
-        amount_a: u64,
-        amount_b: u64,
-        min_lp_out: u64,
-    ) -> Result<()> {
-        require!(amount_a > 0 && amount_b > 0, DaejinError::ZeroDepositAmount);
-
-        let market = &ctx.accounts.market;
-        let total_lp_supply = ctx.accounts.lp_mint.supply;
-
-        let lp_to_mint: u64 = if total_lp_supply == 0 {
-            // Initial LP tokens = sqrt(amount_a * amount_b)
-            let product = (amount_a as u128)
-                .checked_mul(amount_b as u128)
-                .ok_or(DaejinError::MathOverflow)?;
-            integer_sqrt(product) as u64
-        } else {
-            let reserve_a = ctx.accounts.vault_a.amount;
-            let reserve_b = ctx.accounts.vault_b.amount;
-
-            let lp_from_a = (amount_a as u128)
-                .checked_mul(total_lp_supply as u128)
-                .ok_or(DaejinError::MathOverflow)?
-                .checked_div(reserve_a as u128)
-                .ok_or(DaejinError::MathOverflow)?;
-
-            let lp_from_b = (amount_b as u128)
-                .checked_mul(total_lp_supply as u128)
-                .ok_or(DaejinError::MathOverflow)?
-                .checked_div(reserve_b as u128)
-                .ok_or(DaejinError::MathOverflow)?;
-
-            std::cmp::min(lp_from_a, lp_from_b) as u64
+        // Transfer initial base liquidity from creator to market vault
+        let cpi_accounts_base = Transfer {
+            from: ctx.accounts.creator_base_account.to_account_info(),
+            to: ctx.accounts.base_vault.to_account_info(),
+            authority: ctx.accounts.creator.to_account_info(),
         };
+        let cpi_ctx_base = CpiContext::new(
+            ctx.accounts.token_program.to_account_info(),
+            cpi_accounts_base,
+        );
+        token::transfer(cpi_ctx_base, base_amount_in)?;
 
-        require!(lp_to_mint >= min_lp_out, DaejinError::ExcessiveSlippage);
+        // Transfer initial quote liquidity from creator to market vault
+        let cpi_accounts_quote = Transfer {
+            from: ctx.accounts.creator_quote_account.to_account_info(),
+            to: ctx.accounts.quote_vault.to_account_info(),
+            authority: ctx.accounts.creator.to_account_info(),
+        };
+        let cpi_ctx_quote = CpiContext::new(
+            ctx.accounts.token_program.to_account_info(),
+            cpi_accounts_quote,
+        );
+        token::transfer(cpi_ctx_quote, quote_amount_in)?;
 
-        // Transfer token A from user to vault
-        token::transfer(
-            CpiContext::new(
-                ctx.accounts.token_program.to_account_info(),
-                Transfer {
-                    from: ctx.accounts.user_token_a.to_account_info(),
-                    to: ctx.accounts.vault_a.to_account_info(),
-                    authority: ctx.accounts.user.to_account_info(),
-                },
-            ),
-            amount_a,
-        )?;
-
-        // Transfer token B from user to vault
-        token::transfer(
-            CpiContext::new(
-                ctx.accounts.token_program.to_account_info(),
-                Transfer {
-                    from: ctx.accounts.user_token_b.to_account_info(),
-                    to: ctx.accounts.vault_b.to_account_info(),
-                    authority: ctx.accounts.user.to_account_info(),
-                },
-            ),
-            amount_b,
-        )?;
-
-        // Mint LP tokens via Market PDA signing
-        let market_id_bytes = market.market_id.to_le_bytes();
-        let seeds: &[&[&[u8]]] = &[&[
-            b"market",
-            market_id_bytes.as_ref(),
-            &[market.bump],
-        ]];
-
-        token::mint_to(
-            CpiContext::new_with_signer(
-                ctx.accounts.token_program.to_account_info(),
-                MintTo {
-                    mint: ctx.accounts.lp_mint.to_account_info(),
-                    to: ctx.accounts.user_lp.to_account_info(),
-                    authority: ctx.accounts.market.to_account_info(),
-                },
-                seeds,
-            ),
-            lp_to_mint,
-        )?;
-
-        emit!(LiquidityDeposited {
-            market_id: market.market_id,
-            user: ctx.accounts.user.key(),
-            amount_a,
-            amount_b,
-            lp_minted: lp_to_mint,
-            timestamp: Clock::get()?.unix_timestamp,
+        emit!(MarketCreatedEvent {
+            market: market.key(),
+            creator: ctx.accounts.creator.key(),
+            base_mint: ctx.accounts.base_mint.key(),
+            quote_mint: ctx.accounts.quote_mint.key(),
+            initial_base_reserve: base_amount_in,
+            initial_quote_reserve: quote_amount_in,
+            fee_bps,
+            timestamp: market.created_at,
         });
 
         Ok(())
     }
 
-    /// Swap base for quote or quote for base using Constant Product Market Making (CPMM).
+    /// Swaps Base for Quote or Quote for Base using constant product logic (x * y = k).
     pub fn swap(
         ctx: Context<Swap>,
         amount_in: u64,
-        min_amount_out: u64,
-        swap_a_to_b: bool,
+        minimum_amount_out: u64,
+        base_to_quote: bool,
     ) -> Result<()> {
         require!(amount_in > 0, DaejinError::ZeroSwapAmount);
-        let market = &ctx.accounts.market;
-        require!(!market.is_settled, DaejinError::MarketAlreadySettled);
 
-        let reserve_in = if swap_a_to_b {
-            ctx.accounts.vault_a.amount
-        } else {
-            ctx.accounts.vault_b.amount
-        };
+        let market = &mut ctx.accounts.market;
+        let base_reserve = ctx.accounts.base_vault.amount;
+        let quote_reserve = ctx.accounts.quote_vault.amount;
 
-        let reserve_out = if swap_a_to_b {
-            ctx.accounts.vault_b.amount
-        } else {
-            ctx.accounts.vault_a.amount
-        };
+        require!(base_reserve > 0 && quote_reserve > 0, DaejinError::InsufficientLiquidity);
 
-        require!(reserve_in > 0 && reserve_out > 0, DaejinError::InsufficientPoolLiquidity);
-
-        // Deduct protocol fee
+        // Apply fee deduction
         let fee_amount = (amount_in as u128)
             .checked_mul(market.fee_bps as u128)
             .ok_or(DaejinError::MathOverflow)?
-            .checked_div(10000)
+            .checked_div(FEE_DENOMINATOR as u128)
             .ok_or(DaejinError::MathOverflow)? as u64;
 
-        let effective_amount_in = amount_in
+        let net_amount_in = amount_in
             .checked_sub(fee_amount)
             .ok_or(DaejinError::MathOverflow)?;
 
-        // Constant product: dy = (reserve_out * dx) / (reserve_in + dx)
-        let numerator = (effective_amount_in as u128)
-            .checked_mul(reserve_out as u128)
-            .ok_or(DaejinError::MathOverflow)?;
-        let denominator = (reserve_in as u128)
-            .checked_add(effective_amount_in as u128)
-            .ok_or(DaejinError::MathOverflow)?;
-        let amount_out = (numerator.checked_div(denominator).ok_or(DaejinError::MathOverflow)?) as u64;
+        let (amount_out, new_base_reserve, new_quote_reserve) = if base_to_quote {
+            // Base In -> Quote Out
+            let numerator = (net_amount_in as u128)
+                .checked_mul(quote_reserve as u128)
+                .ok_or(DaejinError::MathOverflow)?;
+            let denominator = (base_reserve as u128)
+                .checked_add(net_amount_in as u128)
+                .ok_or(DaejinError::MathOverflow)?;
+            let out = (numerator / denominator) as u64;
+            (out, base_reserve + amount_in, quote_reserve - out)
+        } else {
+            // Quote In -> Base Out
+            let numerator = (net_amount_in as u128)
+                .checked_mul(base_reserve as u128)
+                .ok_or(DaejinError::MathOverflow)?;
+            let denominator = (quote_reserve as u128)
+                .checked_add(net_amount_in as u128)
+                .ok_or(DaejinError::MathOverflow)?;
+            let out = (numerator / denominator) as u64;
+            (out, base_reserve - out, quote_reserve + amount_in)
+        };
 
-        require!(amount_out >= min_amount_out, DaejinError::ExcessiveSlippage);
+        require!(amount_out >= minimum_amount_out, DaejinError::SlippageExceeded);
 
-        let market_id_bytes = market.market_id.to_le_bytes();
+        let base_key = market.base_mint;
+        let quote_key = market.quote_mint;
+        let auth_bump = market.authority_bump;
         let signer_seeds: &[&[&[u8]]] = &[&[
-            b"market",
-            market_id_bytes.as_ref(),
-            &[market.bump],
+            AUTHORITY_SEED,
+            base_key.as_ref(),
+            quote_key.as_ref(),
+            &[auth_bump],
         ]];
 
-        if swap_a_to_b {
-            // User deposits Token A
+        if base_to_quote {
+            // Transfer user base into vault
+            let cpi_transfer_in = Transfer {
+                from: ctx.accounts.user_base_account.to_account_info(),
+                to: ctx.accounts.base_vault.to_account_info(),
+                authority: ctx.accounts.user.to_account_info(),
+            };
             token::transfer(
-                CpiContext::new(
-                    ctx.accounts.token_program.to_account_info(),
-                    Transfer {
-                        from: ctx.accounts.user_token_a.to_account_info(),
-                        to: ctx.accounts.vault_a.to_account_info(),
-                        authority: ctx.accounts.user.to_account_info(),
-                    },
-                ),
+                CpiContext::new(ctx.accounts.token_program.to_account_info(), cpi_transfer_in),
                 amount_in,
             )?;
 
-            // Market disburses Token B
+            // Transfer vault quote out to user via PDA signer
+            let cpi_transfer_out = Transfer {
+                from: ctx.accounts.quote_vault.to_account_info(),
+                to: ctx.accounts.user_quote_account.to_account_info(),
+                authority: ctx.accounts.market_authority.to_account_info(),
+            };
             token::transfer(
                 CpiContext::new_with_signer(
                     ctx.accounts.token_program.to_account_info(),
-                    Transfer {
-                        from: ctx.accounts.vault_b.to_account_info(),
-                        to: ctx.accounts.user_token_b.to_account_info(),
-                        authority: ctx.accounts.market.to_account_info(),
-                    },
+                    cpi_transfer_out,
                     signer_seeds,
                 ),
                 amount_out,
             )?;
         } else {
-            // User deposits Token B
+            // Transfer user quote into vault
+            let cpi_transfer_in = Transfer {
+                from: ctx.accounts.user_quote_account.to_account_info(),
+                to: ctx.accounts.quote_vault.to_account_info(),
+                authority: ctx.accounts.user.to_account_info(),
+            };
             token::transfer(
-                CpiContext::new(
-                    ctx.accounts.token_program.to_account_info(),
-                    Transfer {
-                        from: ctx.accounts.user_token_b.to_account_info(),
-                        to: ctx.accounts.vault_b.to_account_info(),
-                        authority: ctx.accounts.user.to_account_info(),
-                    },
-                ),
+                CpiContext::new(ctx.accounts.token_program.to_account_info(), cpi_transfer_in),
                 amount_in,
             )?;
 
-            // Market disburses Token A
+            // Transfer vault base out to user via PDA signer
+            let cpi_transfer_out = Transfer {
+                from: ctx.accounts.base_vault.to_account_info(),
+                to: ctx.accounts.user_base_account.to_account_info(),
+                authority: ctx.accounts.market_authority.to_account_info(),
+            };
             token::transfer(
                 CpiContext::new_with_signer(
                     ctx.accounts.token_program.to_account_info(),
-                    Transfer {
-                        from: ctx.accounts.vault_a.to_account_info(),
-                        to: ctx.accounts.user_token_a.to_account_info(),
-                        authority: ctx.accounts.market.to_account_info(),
-                    },
+                    cpi_transfer_out,
                     signer_seeds,
                 ),
                 amount_out,
             )?;
         }
 
-        emit!(SwapExecuted {
-            market_id: market.market_id,
+        emit!(SwapExecutedEvent {
+            market: market.key(),
             user: ctx.accounts.user.key(),
-            swap_a_to_b,
+            base_to_quote,
             amount_in,
             amount_out,
             fee_amount,
-            timestamp: Clock::get()?.unix_timestamp,
-        });
-
-        Ok(())
-    }
-
-    /// Settle market outcome (1 = Token A wins, 2 = Token B wins)
-    pub fn settle_market(
-        ctx: Context<SettleMarket>,
-        winning_side: u8,
-    ) -> Result<()> {
-        require!(winning_side == 1 || winning_side == 2, DaejinError::InvalidWinningSide);
-        let market = &mut ctx.accounts.market;
-        require!(!market.is_settled, DaejinError::MarketAlreadySettled);
-
-        market.is_settled = true;
-        market.winning_side = winning_side;
-
-        emit!(MarketSettled {
-            market_id: market.market_id,
-            winning_side,
+            new_base_reserve,
+            new_quote_reserve,
             timestamp: Clock::get()?.unix_timestamp,
         });
 
@@ -288,71 +204,62 @@ pub mod daejin_engine {
 }
 
 // -----------------------------------------------------------------------------
-// Pure Math Helper
+// ACCOUNT VALIDATION STRUCTS
 // -----------------------------------------------------------------------------
-fn integer_sqrt(y: u128) -> u128 {
-    if y == 0 {
-        return 0;
-    }
-    let mut z = y;
-    let mut x = y / 2 + 1;
-    while x < z {
-        z = x;
-        x = (y / x + x) / 2;
-    }
-    z
-}
 
-// -----------------------------------------------------------------------------
-// Account Contexts
-// -----------------------------------------------------------------------------
 #[derive(Accounts)]
-#[instruction(market_id: u64)]
-pub struct InitializeMarket<'info> {
-    #[account(mut)]
-    pub authority: Signer<'info>,
-
+pub struct InitializeAndSeedMarket<'info> {
     #[account(
         init,
-        payer = authority,
+        payer = creator,
         space = 8 + MarketState::INIT_SPACE,
-        seeds = [b"market", market_id.to_le_bytes().as_ref()],
+        seeds = [MARKET_SEED, base_mint.key().as_ref(), quote_mint.key().as_ref()],
         bump
     )]
     pub market: Account<'info, MarketState>,
 
-    pub mint_a: Account<'info, Mint>,
-    pub mint_b: Account<'info, Mint>,
+    /// CHECK: PDA acting as the token vault authority
+    #[account(
+        seeds = [AUTHORITY_SEED, base_mint.key().as_ref(), quote_mint.key().as_ref()],
+        bump
+    )]
+    pub market_authority: AccountInfo<'info>,
+
+    pub base_mint: Account<'info, Mint>,
+    pub quote_mint: Account<'info, Mint>,
 
     #[account(
         init,
-        payer = authority,
-        seeds = [b"vault_a", market.key().as_ref()],
-        bump,
-        token::mint = mint_a,
-        token::authority = market
+        payer = creator,
+        token::mint = base_mint,
+        token::authority = market_authority
     )]
-    pub vault_a: Account<'info, TokenAccount>,
+    pub base_vault: Account<'info, TokenAccount>,
 
     #[account(
         init,
-        payer = authority,
-        seeds = [b"vault_b", market.key().as_ref()],
-        bump,
-        token::mint = mint_b,
-        token::authority = market
+        payer = creator,
+        token::mint = quote_mint,
+        token::authority = market_authority
     )]
-    pub vault_b: Account<'info, TokenAccount>,
+    pub quote_vault: Account<'info, TokenAccount>,
+
+    #[account(mut)]
+    pub creator: Signer<'info>,
 
     #[account(
-        init,
-        payer = authority,
-        seeds = [b"lp_mint", market.key().as_ref()],
-        bump,
-        mint::decimals = 6,
-        mint::authority = market
+        mut,
+        token::mint = base_mint,
+        token::authority = creator
     )]
-    pub lp_mint: Account<'info, Mint>,
+    pub creator_base_account: Account<'info, TokenAccount>,
+
+    #[account(
+        mut,
+        token::mint = quote_mint,
+        token::authority = creator
+    )]
+    pub creator_quote_account: Account<'info, TokenAccount>,
 
     pub token_program: Program<'info, Token>,
     pub system_program: Program<'info, System>,
@@ -360,201 +267,108 @@ pub struct InitializeMarket<'info> {
 }
 
 #[derive(Accounts)]
-pub struct DepositLiquidity<'info> {
-    #[account(mut)]
-    pub user: Signer<'info>,
-
-    #[account(
-        mut,
-        seeds = [b"market", market.market_id.to_le_bytes().as_ref()],
-        bump = market.bump
-    )]
-    pub market: Account<'info, MarketState>,
-
-    #[account(
-        mut,
-        seeds = [b"vault_a", market.key().as_ref()],
-        bump = market.vault_a_bump
-    )]
-    pub vault_a: Account<'info, TokenAccount>,
-
-    #[account(
-        mut,
-        seeds = [b"vault_b", market.key().as_ref()],
-        bump = market.vault_b_bump
-    )]
-    pub vault_b: Account<'info, TokenAccount>,
-
-    #[account(
-        mut,
-        seeds = [b"lp_mint", market.key().as_ref()],
-        bump = market.lp_bump
-    )]
-    pub lp_mint: Account<'info, Mint>,
-
-    #[account(
-        mut,
-        constraint = user_token_a.mint == market.mint_a,
-        constraint = user_token_a.owner == user.key()
-    )]
-    pub user_token_a: Account<'info, TokenAccount>,
-
-    #[account(
-        mut,
-        constraint = user_token_b.mint == market.mint_b,
-        constraint = user_token_b.owner == user.key()
-    )]
-    pub user_token_b: Account<'info, TokenAccount>,
-
-    #[account(
-        mut,
-        constraint = user_lp.mint == lp_mint.key(),
-        constraint = user_lp.owner == user.key()
-    )]
-    pub user_lp: Account<'info, TokenAccount>,
-
-    pub token_program: Program<'info, Token>,
-}
-
-#[derive(Accounts)]
 pub struct Swap<'info> {
+    #[account(
+        mut,
+        seeds = [MARKET_SEED, market.base_mint.as_ref(), market.quote_mint.as_ref()],
+        bump = market.bump
+    )]
+    pub market: Account<'info, MarketState>,
+
+    /// CHECK: PDA token vault authority
+    #[account(
+        seeds = [AUTHORITY_SEED, market.base_mint.as_ref(), market.quote_mint.as_ref()],
+        bump = market.authority_bump
+    )]
+    pub market_authority: AccountInfo<'info>,
+
+    #[account(mut, address = market.base_vault)]
+    pub base_vault: Account<'info, TokenAccount>,
+
+    #[account(mut, address = market.quote_vault)]
+    pub quote_vault: Account<'info, TokenAccount>,
+
     #[account(mut)]
     pub user: Signer<'info>,
 
     #[account(
-        seeds = [b"market", market.market_id.to_le_bytes().as_ref()],
-        bump = market.bump
+        mut,
+        token::mint = market.base_mint,
+        token::authority = user
     )]
-    pub market: Account<'info, MarketState>,
+    pub user_base_account: Account<'info, TokenAccount>,
 
     #[account(
         mut,
-        seeds = [b"vault_a", market.key().as_ref()],
-        bump = market.vault_a_bump
+        token::mint = market.quote_mint,
+        token::authority = user
     )]
-    pub vault_a: Account<'info, TokenAccount>,
-
-    #[account(
-        mut,
-        seeds = [b"vault_b", market.key().as_ref()],
-        bump = market.vault_b_bump
-    )]
-    pub vault_b: Account<'info, TokenAccount>,
-
-    #[account(
-        mut,
-        constraint = user_token_a.mint == market.mint_a,
-        constraint = user_token_a.owner == user.key()
-    )]
-    pub user_token_a: Account<'info, TokenAccount>,
-
-    #[account(
-        mut,
-        constraint = user_token_b.mint == market.mint_b,
-        constraint = user_token_b.owner == user.key()
-    )]
-    pub user_token_b: Account<'info, TokenAccount>,
+    pub user_quote_account: Account<'info, TokenAccount>,
 
     pub token_program: Program<'info, Token>,
 }
 
-#[derive(Accounts)]
-pub struct SettleMarket<'info> {
-    #[account(
-        mut,
-        has_one = authority @ DaejinError::Unauthorized,
-        seeds = [b"market", market.market_id.to_le_bytes().as_ref()],
-        bump = market.bump
-    )]
-    pub market: Account<'info, MarketState>,
-    pub authority: Signer<'info>,
-}
+// -----------------------------------------------------------------------------
+// STATE DEFINITION
+// -----------------------------------------------------------------------------
 
-// -----------------------------------------------------------------------------
-// State Definition
-// -----------------------------------------------------------------------------
 #[account]
 #[derive(InitSpace)]
 pub struct MarketState {
-    pub authority: Pubkey,
-    pub market_id: u64,
-    pub mint_a: Pubkey,
-    pub mint_b: Pubkey,
-    pub vault_a: Pubkey,
-    pub vault_b: Pubkey,
-    pub lp_mint: Pubkey,
+    pub creator: Pubkey,
+    pub base_mint: Pubkey,
+    pub quote_mint: Pubkey,
+    pub base_vault: Pubkey,
+    pub quote_vault: Pubkey,
     pub fee_bps: u16,
-    pub is_settled: bool,
-    pub winning_side: u8,
+    pub total_base_shares: u64,
+    pub total_quote_shares: u64,
+    pub created_at: i64,
     pub bump: u8,
-    pub vault_a_bump: u8,
-    pub vault_b_bump: u8,
-    pub lp_bump: u8,
+    pub authority_bump: u8,
 }
 
 // -----------------------------------------------------------------------------
-// Events
+// EVENTS & ERRORS
 // -----------------------------------------------------------------------------
+
 #[event]
-pub struct MarketInitialized {
-    pub market_id: u64,
+pub struct MarketCreatedEvent {
     pub market: Pubkey,
-    pub authority: Pubkey,
-    pub mint_a: Pubkey,
-    pub mint_b: Pubkey,
+    pub creator: Pubkey,
+    pub base_mint: Pubkey,
+    pub quote_mint: Pubkey,
+    pub initial_base_reserve: u64,
+    pub initial_quote_reserve: u64,
     pub fee_bps: u16,
     pub timestamp: i64,
 }
 
 #[event]
-pub struct LiquidityDeposited {
-    pub market_id: u64,
+pub struct SwapExecutedEvent {
+    pub market: Pubkey,
     pub user: Pubkey,
-    pub amount_a: u64,
-    pub amount_b: u64,
-    pub lp_minted: u64,
-    pub timestamp: i64,
-}
-
-#[event]
-pub struct SwapExecuted {
-    pub market_id: u64,
-    pub user: Pubkey,
-    pub swap_a_to_b: bool,
+    pub base_to_quote: bool,
     pub amount_in: u64,
     pub amount_out: u64,
     pub fee_amount: u64,
+    pub new_base_reserve: u64,
+    pub new_quote_reserve: u64,
     pub timestamp: i64,
 }
 
-#[event]
-pub struct MarketSettled {
-    pub market_id: u64,
-    pub winning_side: u8,
-    pub timestamp: i64,
-}
-
-// -----------------------------------------------------------------------------
-// Errors
-// -----------------------------------------------------------------------------
 #[error_code]
 pub enum DaejinError {
-    #[msg("Fee cannot exceed 1000 basis points (10%).")]
-    FeeTooHigh,
-    #[msg("Deposit amount must be strictly greater than zero.")]
-    ZeroDepositAmount,
-    #[msg("Mathematical calculation produced an overflow.")]
-    MathOverflow,
-    #[msg("Swap amount exceeds permitted slippage bounds.")]
-    ExcessiveSlippage,
-    #[msg("Swap input amount must be greater than zero.")]
+    #[msg("Initial liquidity must be greater than zero for both assets")]
+    ZeroInitialLiquidity,
+    #[msg("Market fee exceeds the maximum allowed threshold (10%)")]
+    FeeExceedsMaximum,
+    #[msg("Swap input amount cannot be zero")]
     ZeroSwapAmount,
-    #[msg("Market is already settled.")]
-    MarketAlreadySettled,
-    #[msg("Insufficient pool liquidity to complete swap.")]
-    InsufficientPoolLiquidity,
-    #[msg("Invalid winning side indicator (must be 1 or 2).")]
-    InvalidWinningSide,
-    #[msg("Signer is not authorized to settle this market.")]
-    Unauthorized,
+    #[msg("Insufficient pool reserves for swap")]
+    InsufficientLiquidity,
+    #[msg("Output slippage limit exceeded")]
+    SlippageExceeded,
+    #[msg("Mathematical calculation overflowed")]
+    MathOverflow,
 }

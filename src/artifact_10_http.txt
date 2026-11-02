@@ -1,0 +1,9 @@
+GET /health
+Status: 200 OK
+{
+  "status": "healthy",
+  "protocol": "Daejin Autonomous Engine",
+  "network": "devnet",
+  "programId": "Daej1nMarketEng1ne11111111111111111111111111",
+  "uptimeSeconds": 86420
+}

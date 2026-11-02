@@ -1,0 +1,6 @@
+2/3 🛠️ Architecture Highlights:
+• Anchor v0.30 engine with deterministic PDA vault isolation
+• Zero-slippage risk via constant-product math & anti-frontrunning bounds
+• Sub-second execution with automated multi-channel telemetry (Discord/X)
+
+Code & Anchor Program ID: https://github.com/daejin-market-engine 🧵

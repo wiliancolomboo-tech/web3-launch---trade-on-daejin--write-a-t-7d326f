@@ -1,0 +1,1 @@
+fetch(`${DAEJIN_API}/create-market`)

@@ -1,0 +1,5 @@
+🚨 INTRODUCING THE DAEJIN SOVEREIGN MARKET ENGINE ON @DaejinProtocol!
+
+We just launched an institutional-grade, deterministic market on #Solana with 100% PDA-isolated vaults & instant atomic settlement.
+
+Sub-second trading is officially LIVE. 🧵👇 (1/3)

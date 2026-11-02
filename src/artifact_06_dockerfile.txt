@@ -1,0 +1,25 @@
+FROM node:20-bullseye-slim
+
+WORKDIR /usr/src/app
+
+# Install native dependencies for libudev & Solana tooling
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    python3 \
+    curl \
+    git \
+    libudev-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY package*.json ./
+RUN npm ci --only=production
+
+COPY . .
+
+ENV NODE_ENV=production
+ENV SOLANA_RPC_URL="https://api.devnet.solana.com"
+
+EXPOSE 8080
+
+CMD ["node", "dist/client/daejin_orchestrator.js"]

@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  daejin-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daejin-market-agent
+    restart: unless-stopped
+    environment:
+      - TWITTER_API_KEY=${TWITTER_API_KEY}
+      - TWITTER_API_SECRET=${TWITTER_API_SECRET}
+      - TWITTER_ACCESS_TOKEN=${TWITTER_ACCESS_TOKEN}
+      - TWITTER_ACCESS_SECRET=${TWITTER_ACCESS_SECRET}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+    volumes:
+      - ./keypair.json:/usr/src/app/keypair.json:ro
+    command: ["create", "-k", "/usr/src/app/keypair.json", "-t", "Will Solana exceed 100k TPS with Firedancer?", "-l", "5000"]

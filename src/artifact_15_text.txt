@@ -1,0 +1,8 @@
+3/ Built with @coral_xyz Anchor on @solana:
+✅ 0.50% dynamic creator royalty routing
+✅ Sub-400ms trades with deterministic slippage protection
+✅ 100% test coverage with Dockerized telemetry & Prometheus monitoring
+
+Check out the live market & open-source repo:
+🔗 https://daejin.trade
+💻 https://github.com/daejin-market/daejin-core

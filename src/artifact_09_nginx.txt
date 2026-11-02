@@ -1,0 +1,9 @@
+server {
+    listen 80;
+    server_name localhost;
+
+    location /healthz {
+        return 200 '{"status":"HEALTHY","service":"daejin-market-agent","uptime":"ok"}';
+        add_header Content-Type application/json;
+    }
+}

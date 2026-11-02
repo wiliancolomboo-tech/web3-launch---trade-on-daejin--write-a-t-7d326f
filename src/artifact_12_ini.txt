@@ -1,0 +1,8 @@
+SOLANA_RPC_URL="https://api.devnet.solana.com"
+SOLANA_PRIVATE_KEY="YOUR_WALLET_SECRET_KEY_IN_HEX"
+PROGRAM_ID="Daej1nMarketEng1ne111111111111111111111111111"
+TWITTER_API_KEY="your_x_api_key"
+TWITTER_API_SECRET="your_x_api_secret"
+TWITTER_ACCESS_TOKEN="your_x_access_token"
+TWITTER_ACCESS_SECRET="your_x_access_secret"
+SLACK_WEBHOOK_URL="https://api.example.com/webhooks/alerts/placeholder"

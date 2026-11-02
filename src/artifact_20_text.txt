@@ -1,0 +1,8 @@
+Under the hood of our @DaejinProtocol integration:
+
+🔹 Anchor smart contract with deterministic x * y = k dynamic bonding curve
+🔹 Anti-snipe virtual reserve balancing
+🔹 Program-controlled PDA asset custody
+🔹 Real-time automated bootstrap trading + Slack/Discord ops hooks
+
+Verifiable liquidity at slot speed. 💎 (2/3)

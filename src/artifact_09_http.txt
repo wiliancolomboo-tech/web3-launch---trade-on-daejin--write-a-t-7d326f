@@ -1,0 +1,11 @@
+GET /health
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "status": "UP",
+  "active_markets_monitored": 1,
+  "last_slot": 298492041,
+  "resend_telemetry": "CONNECTED",
+  "webhook_status": "OPERATIONAL"
+}

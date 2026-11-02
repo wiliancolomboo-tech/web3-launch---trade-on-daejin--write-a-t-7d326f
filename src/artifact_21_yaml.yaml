@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  daejin-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daejin-syndication-daemon
+    restart: always
+    environment:
+      - SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+      - PROGRAM_ID=Daejin1111111111111111111111111111111111111
+      - TWITTER_API_KEY=${TWITTER_API_KEY}
+      - TWITTER_API_SECRET=${TWITTER_API_SECRET}
+      - TWITTER_ACCESS_TOKEN=${TWITTER_ACCESS_TOKEN}
+      - TWITTER_ACCESS_SECRET=${TWITTER_ACCESS_SECRET}
+      - DISCORD_SLACK_WEBHOOK_URL=${DISCORD_SLACK_WEBHOOK_URL}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

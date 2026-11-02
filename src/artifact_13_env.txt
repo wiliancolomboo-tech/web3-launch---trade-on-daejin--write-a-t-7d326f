@@ -1,0 +1,11 @@
+# Solana Network Configuration
+SOLANA_RPC_URL=https://api.devnet.solana.com
+KEYPAIR_PATH=./id.json
+
+# Enterprise Integrations
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+RESEND_API_KEY=re_enterprise_key_here
+ALERT_EMAIL_RECIPIENT=ops@enterprise-domain.com
+
+# Server Settings
+PORT=8080

@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  daejin-market-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daejin-sentinel-agent
+    restart: on-failure
+    environment:
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - KEYPAIR_PATH=/secrets/id.json
+      - TELEMETRY_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+    volumes:
+      - ./secrets:/secrets:ro
+    networks:
+      - daejin-network
+
+networks:
+  daejin-network:
+    driver: bridge

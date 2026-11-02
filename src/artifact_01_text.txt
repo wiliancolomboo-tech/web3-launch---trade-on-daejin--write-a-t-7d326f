@@ -1,0 +1,10 @@
+Daejin website:
+Daejin developer documentation:
+Daejin program ID:
+Anchor IDL or SDK repository:
+Target cluster: devnet | mainnet-beta
+Market type and required parameters:
+Minimum launch/trade amount:
+Official sponsor X handle:
+Bounty submission URL:
+Required proof artifacts:

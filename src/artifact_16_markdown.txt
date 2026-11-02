@@ -1,0 +1,7 @@
+1/3 🌊 Just deployed and seeded a next-gen liquidity market on @DaejinMarkets on #Solana!
+
+⚡ Pair: $SOL / $USDC
+🛡️ Architecture: Anchor PDA-governed vaults with dynamic Constant-Product ($x \cdot y = k$) AMM invariant
+🔗 Contract: DaejinMarket11111111111111111111111111111111
+
+Zero custodial exposure. Instant execution. 🧵👇

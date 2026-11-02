@@ -1,0 +1,5 @@
+---
+
+# 5. Comprehensive Test Suite & QA Matrix
+
+### File: `tests/daejin_market.spec.ts`

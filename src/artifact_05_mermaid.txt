@@ -1,0 +1,18 @@
+flowchart TD
+    U[Operator CLI / Web UI] --> V[Input Validation]
+    V --> W[Daejin SDK Adapter]
+    W --> R[Solana RPC / WebSocket]
+    W --> D[Daejin Program]
+    D --> M[Market Account]
+    D --> B[Base Token Vault]
+    D --> Q[Quote Token Vault]
+    D --> E[Event Logs]
+    E --> I[Indexer / Event Consumer]
+    I --> N[Notification Adapter]
+    N --> S[Slack or Discord Webhook]
+    N --> X[Resend Email API]
+    I --> H[Health and Audit Store]
+    R --> C[Confirmation / Timeout Controller]
+    C --> W
+    U --> A[Local Keypair or HSM Signer]
+    A --> W

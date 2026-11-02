@@ -1,0 +1,28 @@
+🧵 1/3
+Thrilled to unveil our high-throughput market creation engine on @DaejinProtocol! 
+
+Daejin powers the next generation of prediction markets on Solana with:
+⚡ 400ms Sub-second settlement
+💧 Dual-sided Constant Product AMM liquidity
+🔐 Zero-counterparty risk atomic SPL vaults
+
+We just launched our premier market! Check it out below 👇
+
+---
+
+🧵 2/3
+Under the hood of the Daejin protocol:
+1️⃣ Continuous pricing with 100% mathematical invariant solvency ($YES/$NO tokens backed 1:1 by USDC collateral)
+2️⃣ Instant automated syndication via Twitter API v2 + enterprise webhooks
+3️⃣ Trustless oracle resolution verified deterministically on-chain
+
+Trade your conviction seamlessly on Solana! 
+
+---
+
+🧵 3/3
+Explore the open-source contracts and test suite:
+🔗 GitHub: https://github.com/daejin-ecosystem/daejin-market-engine
+🌐 Live on Devnet: DaejinMkt11111111111111111111111111111111111
+
+Big props to the @DaejinProtocol team for engineering the fastest prediction layer in crypto. Let’s build! 🚀🪐 #Solana #Daejin #DeFi #PredictionMarkets

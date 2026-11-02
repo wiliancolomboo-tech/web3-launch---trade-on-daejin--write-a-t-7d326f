@@ -1,30 +1,28 @@
 flowchart TD
-    subgraph ClientLayer["Enterprise Automation & Execution Layer"]
-        A[Market Operator / CLI Daemon] -->|1. Generate Keypairs & Metadata| B[Market Creator Agent]
-        B -->|2. Provision SPL Tokens| C[SPL Token Program / Token-2022]
-        B -->|3. Submit InitializeMarket IX| D[Solana RPC Gateway / Jito Relayer]
+    subgraph Client_and_Automation["Client & Orchestration Layer"]
+        CLI[Daejin Enterprise CLI / Agent Worker]
+        Config[(Local Config / Keypairs)]
+        X_API[X / Twitter API v2 REST Gateway]
+        Discord_Webhook[Enterprise Discord / Slack Webhook]
     end
 
-    subgraph SolanaCluster["Solana On-Chain Program (Daejin Core)"]
-        D -->|4. Verify Signers & Seeds| E[Daejin Market Program]
-        E -->|5. Initialize Vaults & Mints| F[(Market PDA Account)]
-        F --> G[(Vault Token A - Base)]
-        F --> H[(Vault Token B - Quote / USDC)]
-        F --> I[(LP Mint PDA)]
-        
-        J[Trader / Arbitrage Bot] -->|6. Execute Swap IX| E
-        E -->|7. Mathematical Curve Verification| K{Slippage & Balance Check}
-        K -->|Pass| L[Update Reserves & Transfer SPL]
-        K -->|Fail| M[Revert Anchor ErrorCode]
-        
-        N[Protocol Authority] -->|8. Resolve / Settle Market| E
-        E -->|9. Disburse Winnings / Collect Fees| O[(Protocol Fee Treasury)]
+    subgraph Solana_Runtime["Solana Blockchain (Mainnet-Beta / Devnet)"]
+        RPC[Solana JSON-RPC Engine]
+        Daejin_Prog["Daejin Market Program (Anchor PDA Engine)"]
+        Base_Mint["Base Token Mint (SPL)"]
+        Quote_Mint["Quote Token Mint (WSOL / USDC)"]
+        Market_PDA["Market State PDA (seeds: ['market', base, quote])"]
+        Vault_Base["Base Vault Token Account (PDA owned)"]
+        Vault_Quote["Quote Vault Token Account (PDA owned)"]
     end
 
-    subgraph EnterpriseRelay["Observability & Alerting Engine"]
-        E -.->|Emit MarketInitialized / SwapExecuted Events| P[WebSocket Geyser / RPC Subscriptions]
-        P -->|Stream Logs| Q[Enterprise Notification Engine]
-        Q -->|Webhook POST| R[Discord / Slack Channels]
-        Q -->|REST API| S[Resend Email Alerts]
-        Q -->|Prometheus Metrics| T[Grafana Dashboard]
-    end
+    CLI -->|1. Signs & Dispatches create_and_seed_market Ix| RPC
+    Config -.->|Supplies Keypair & Secrets| CLI
+    RPC -->|2. Invokes via CPI| Daejin_Prog
+    Daejin_Prog -->|3. Derives & Validates PDA| Market_PDA
+    Daejin_Prog -->|4. Transfers Base & Quote Liquidity| Vault_Base
+    Daejin_Prog -->|4. Transfers Base & Quote Liquidity| Vault_Quote
+    Daejin_Prog -->|5. Emits MarketCreatedEvent| RPC
+    RPC -.->|6. WebSocket LogsSubscribe Notification| CLI
+    CLI -->|7. Dispatches Launch Thread| X_API
+    CLI -->|8. Posts Rich Embed Alert| Discord_Webhook

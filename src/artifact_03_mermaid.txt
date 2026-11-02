@@ -1,0 +1,29 @@
+sequenceDiagram
+    autonumber
+    actor Admin as Market Creator
+    actor Trader as Market Participant
+    participant CLI as DLSE Enterprise Client
+    participant Contract as Solana Daejin Program
+    participant Vault as Collateral Vault PDA
+    participant Twitter as X (Twitter) Engine
+    participant Webhook as Discord / Slack
+
+    Admin->>CLI: daejin-cli create-market --title "Solana Q3 Breakout" --feed Pyth
+    CLI->>Contract: initialize_market(params, bumps)
+    Contract->>Vault: Instantiate Escrow PDA
+    Contract-->>CLI: Transaction Signature (Confirmed)
+    
+    par Async Dispatch
+        CLI->>Twitter: Post Launch Thread (Parent + Child 1 + Child 2)
+        Twitter-->>CLI: Tweet IDs Returned
+        CLI->>Webhook: Emit Event (Payload: MarketPubkey, Mints, TweetURL)
+    end
+
+    Trader->>Contract: swap_exact_tokens_for_tokens(Outcome: YES, Collateral: 50 SOL)
+    Contract->>Vault: Lock Collateral
+    Contract->>Trader: Transfer Outcome Tokens
+    
+    Admin->>Contract: resolve_market(WinningOutcome: YES)
+    Trader->>Contract: redeem_winnings(Burn: YES Tokens)
+    Contract->>Vault: Unlock Pro-Rata Collateral
+    Contract->>Trader: Transfer Payout

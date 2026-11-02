@@ -1,0 +1,6 @@
+3/3 🤖 Built with the Daejin Autonomous CLI: programmatic market initialization + instant social layer syndication (Twitter v2 & Discord webhooks) in a single block.
+
+Trade on the market right now:
+👉 https://daejin.trade/market/YOUR_MARKET_PDA
+
+Let's build the future of decentralized liquidity on Solana! @DaejinMarkets 🚀🪐

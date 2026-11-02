@@ -1,0 +1,13 @@
+# Solana Network Configuration
+SOLANA_RPC_URL=https://api.devnet.solana.com
+SOLANA_KEYPAIR_PATH=./secrets/id.json
+
+# X (Twitter) API v2 Credentials
+TWITTER_API_KEY=your_api_key_here
+TWITTER_API_SECRET=your_api_secret_here
+TWITTER_ACCESS_TOKEN=your_access_token_here
+TWITTER_ACCESS_SECRET=your_access_secret_here
+
+# Enterprise Monitoring
+NOTIFICATION_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+LOG_LEVEL=info

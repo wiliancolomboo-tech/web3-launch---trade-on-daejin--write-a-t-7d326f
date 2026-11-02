@@ -1,0 +1,6 @@
+SOLANA_RPC_URL=https://api.devnet.solana.com
+SOLANA_KEYPAIR_PATH=/app/keys/id.json
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+RESEND_API_KEY=re_123456789_enterprise_key
+NOTIFICATION_EMAIL=ops@daejin-market-engine.io
+PORT=8080

@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  daejin-orchestrator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daejin_production_node
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - PROGRAM_ID=Daej1nEngine111111111111111111111111111111111
+      - TWITTER_API_KEY=${TWITTER_API_KEY}
+      - TWITTER_API_SECRET=${TWITTER_API_SECRET}
+      - TWITTER_ACCESS_TOKEN=${TWITTER_ACCESS_TOKEN}
+      - TWITTER_ACCESS_SECRET=${TWITTER_ACCESS_SECRET}
+      - DISCORD_SLACK_WEBHOOK=${DISCORD_SLACK_WEBHOOK}
+    ports:
+      - "9102:9102"
+    volumes:
+      - ./keys:/app/keys:ro
+    command: ["node", "dist/index.js", "create-market", "-k", "/app/keys/payer.json", "-m", "1001", "-b", "So11111111111111111111111111111111111111112", "-q", "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", "-t", "SOL-USD"]

@@ -1,0 +1,5 @@
+The contract is deployed, verified, and ready for volume.
+
+🔗 Market ID: SOL-FLIP-DEX
+📊 Protocol Explorer: https://explorer.solana.com/address/Daej1nMarket111111111111111111111111111111111?cluster=devnet
+⚡ Trade now on @DaejinProtocol and be part of the future of decentralized forecasting on @solana! 🚀 (3/3)

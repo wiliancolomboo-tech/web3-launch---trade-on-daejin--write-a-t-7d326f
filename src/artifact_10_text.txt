@@ -1,0 +1,10 @@
+Creating liquidity and prediction markets on Solana should take seconds, not hours.
+
+Today we’re launching the Autonomous Market Creation & Trade Pipeline for @DaejinProtocol 🧵👇
+
+Under the hood:
+🔹 Anchor v0.30 deterministic PDA state vaults
+🔹 Atomic initial trade bootstrapping in 1 transaction
+🔹 Zero-loss math & verified safe arithmetic
+
+1/3

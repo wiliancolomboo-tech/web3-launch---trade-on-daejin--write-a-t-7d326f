@@ -1,0 +1,17 @@
+# Solana Network Settings
+SOLANA_RPC_URL=https://api.devnet.solana.com
+PROGRAM_ID=Daej1nMarket1111111111111111111111111111111111
+ADMIN_KEYPAIR_PATH=/etc/secrets/id.json
+PORT=8080
+
+# X (Twitter) API v2 Credentials
+TWITTER_APP_KEY=consumer_app_key_here
+TWITTER_APP_SECRET=consumer_app_secret_here
+TWITTER_ACCESS_TOKEN=oauth_access_token_here
+TWITTER_ACCESS_SECRET=oauth_access_token_secret_here
+
+# Notification & Dispatch Hooks
+SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+RESEND_API_KEY=re_1234567890abcdef
+ALERT_EMAIL_RECIPIENT=investors@daejin.fi

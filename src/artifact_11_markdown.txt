@@ -1,0 +1,6 @@
+2/ How it works under the hood:
+Market creators permissionlessly deploy complete-set collateral vaults ($1 USDC = 1 $YES + 1 $NO).
+
+Trader funds are securely locked in PDA-derived escrows—no centralized multisig, no custodial risk. 
+
+Built with @coral_xyz Anchor & sub-cent transaction efficiency! 🔐📈

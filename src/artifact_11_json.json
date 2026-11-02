@@ -1,0 +1,13 @@
+{
+  "timestamp": "2025-03-30T12:00:00.000Z",
+  "source": "DaejinMarketEngine",
+  "status": "HEALTHY",
+  "network": "solana-devnet",
+  "slot": 312891290,
+  "marketPda": "7XzE2Q1...4j9b",
+  "reserves": {
+    "reserveA": "100000000",
+    "reserveB": "100000000",
+    "totalCollateral": "100000000"
+  }
+}

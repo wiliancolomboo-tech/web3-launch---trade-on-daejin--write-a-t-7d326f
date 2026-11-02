@@ -1,0 +1,7 @@
+How does it work under the hood? ⚙️
+
+• Canonical seed derivation ensures ZERO custodial key risk.
+• Constant-product invariant curves with on-chain overflow safety & fee bounds.
+• Real-time notification bridge streaming execution alerts via Webhooks & @Resend.
+
+Engineered for extreme performance and 0 downtime on @DaejinProtocol. (2/3)

@@ -1,0 +1,7 @@
+{
+  "status": "healthy",
+  "programId": "DaeJ1nMarket111111111111111111111111111111111",
+  "syncedSlot": 284102941,
+  "activeWebhooks": ["Slack", "Resend"],
+  "uptimeSeconds": 1420
+}

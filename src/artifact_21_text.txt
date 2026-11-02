@@ -1,0 +1,8 @@
+DeFi liquidity shouldn't take hours to orchestrate.
+
+With @DaejinProtocol, anyone can initialize, seed, and trade programmatic markets in a single Solana transaction.
+
+Explore our open-source repo & launch your market today:
+🔗 https://github.com/daejin-market/orchestrator
+
+Tagging @DaejinProtocol #Solana #DeFi #SolanaEcosystem (3/3)

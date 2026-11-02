@@ -1,0 +1,32 @@
+🧵 1/3
+Prediction markets shouldn't be sluggish or custody-compromised.
+
+Today we're open-sourcing our institutional-grade market factory on @DaejinProtocol (#Solana):
+⚡ Sub-second Parimutuel settlements
+🔒 100% PDA-enforced non-custodial token vaults
+📡 Built-in Enterprise Discord/Slack telemetry
+
+Check it out 👇
+
+---
+
+🧵 2/3
+How does it work under the hood?
+1️⃣ Deploy arbitrary prediction pairs in a single transaction via Anchor PDA isolation.
+2️⃣ High-frequency SPL collateral pooling (USDC/USDT) with automated mathematical share curves.
+3️⃣ Zero-slippage oracle finalization and instant atomic claim distributions.
+
+Clean. Deterministic. Verifiable.
+
+---
+
+🧵 3/3
+Turnkey operations ready today:
+📦 Complete Dockerized CLI orchestrator
+🧪 100% passing Anchor integration test suite
+🛡️ Audit-ready Rust state contracts with overflow protection
+
+Try the market live on @DaejinProtocol: https://daejin.fi
+GitHub & Handover Docs: https://github.com/daejin-ecosystem/daejin-market-core
+
+#Solana #DeFi #Web3 #SolanaEcosystem 🚀

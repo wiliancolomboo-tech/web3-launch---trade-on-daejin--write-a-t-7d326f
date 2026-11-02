@@ -1,0 +1,8 @@
+We’ve integrated real-time webhook indexing (Slack, Resend, and automated X syndication) so creators can track volume spikes live.
+
+Ready to launch and trade your first market on Daejin? 
+
+Explore the open-source repo & start trading today:
+🔗 https://github.com/daejin-protocol/daejin-orchestrator
+
+Tagging @DaejinProtocol #Solana #DeFi #SolanaDevs (3/3)

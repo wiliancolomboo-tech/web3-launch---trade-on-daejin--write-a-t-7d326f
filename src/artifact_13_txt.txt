@@ -1,0 +1,6 @@
+2/3 🔬 The Architecture:
+• Deterministic Outcome PDAs (1:1 collateralized by SPL tokens)
+• Integrated Constant Product AMM: instant swap execution with dynamic fee distribution
+• Optimistic assertions backed by a 1-hour timelock dispute window
+
+No order book latency. Just pure deterministic on-chain liquidity.

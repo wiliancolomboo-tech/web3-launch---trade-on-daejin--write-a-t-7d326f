@@ -1,0 +1,9 @@
+The future of continuous liquidity on @solana has landed. ⚡️
+
+We just engineered, deployed, and seeded a brand-new constant-product automated market on @DaejinProtocol with single-slot finality!
+
+📦 Market ID: $SOL-USDC-ALPHA
+🔗 Program ID: Daej1n1111111111111111111111111111111111111
+🧾 Verified On-Chain PDA: https://solscan.io/account/Daej1n1111111111111111111111111111111111111?cluster=devnet
+
+Here is how we did it in sub-second execution 🧵👇

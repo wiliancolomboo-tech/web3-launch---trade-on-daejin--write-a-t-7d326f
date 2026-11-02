@@ -1,0 +1,7 @@
+3/3 Why @DaejinProtocol on Solana?
+Sub-second settlement, fractions of a cent per trade, and zero-friction liquidity scaling for the next wave of on-chain capital.
+
+Turnkey CLI, open-source Anchor core & event daemon ready to spin up your own market:
+👉 https://github.com/developer/daejin-market-agent
+
+Trade now on #Daejin! 🌐🪐 #Solana #DeFi #Web3

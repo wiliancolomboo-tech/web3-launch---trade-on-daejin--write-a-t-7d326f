@@ -1,0 +1,11 @@
+# File: /nginx.conf
+server {
+    listen 80;
+    server_name localhost;
+
+    location /healthz {
+        access_log off;
+        return 200 '{"status":"UP","engine":"daejin-amm-orchestrator","timestamp":"$time_iso8601"}\n';
+        add_header Content-Type application/json;
+    }
+}

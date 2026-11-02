@@ -1,0 +1,8 @@
+To prove the power of @DaejinProtocol, we open-sourced the complete Daejin Nexus SDK:
+• Turnkey Anchor smart contract engine
+• Production CLI & automated X/Discord/Resend notifier
+• Dockerized deployment runner
+
+Try it now & build on the fastest market rails in Web3: github.com/daejin-nexus/daejin-market
+
+#Solana #DeFi #Daejin 3/3 🏁

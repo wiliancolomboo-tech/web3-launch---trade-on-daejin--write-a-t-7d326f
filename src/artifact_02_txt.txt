@@ -1,0 +1,20 @@
++-----------------------------------------------------------------------------------+
+|                        DAEJIN AUTOMATED MARKET INFRASTRUCTURE                     |
++-----------------------------------------------------------------------------------+
+                                          |
+        +---------------------------------+---------------------------------+
+        |                                                                   |
+        v                                                                   v
++-------------------------------+                                 +------------------+
+|   Solana Cluster (Mainnet/Dev)|                                 | Enterprise Alert |
+| - Daejin Market Program       |                                 | - Slack Webhook  |
+| - Base / Quote Token Vaults   |<==== [Event WebSocket API] ====>| - Discord Channel|
+| - SPL Associated Accounts     |                                 | - Resend Email   |
++-------------------------------+                                 +------------------+
+        ^
+        | Transaction Routing (Priority Fees & Compute Budget)
++-------------------------------+
+| Daejin Deployment Daemon / CLI|
+| - Deterministic Seed Gen      |
+| - Token Setup & Market Seed   |
++-------------------------------+

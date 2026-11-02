@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  daejin-orchestrator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daejin-worker
+    restart: unless-stopped
+    environment:
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - NOTIFICATION_EMAIL=${NOTIFICATION_EMAIL}
+      - TWITTER_API_KEY=${TWITTER_API_KEY}
+      - TWITTER_API_SECRET=${TWITTER_API_SECRET}
+      - TWITTER_ACCESS_TOKEN=${TWITTER_ACCESS_TOKEN}
+      - TWITTER_ACCESS_SECRET=${TWITTER_ACCESS_SECRET}
+      - KEYPAIR_PATH=/secrets/id.json
+    volumes:
+      - ./secrets:/secrets:ro
+    command: ["create-and-broadcast", "-m", "SOL-PRED-101", "-q", "Will Solana processed TPS exceed 5000 in 2025?", "-d", "14", "-k", "/secrets/id.json"]

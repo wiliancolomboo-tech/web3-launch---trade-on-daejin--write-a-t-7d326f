@@ -1,0 +1,10 @@
+{
+  "status": "healthy",
+  "program_id": "Daej1nMarket1111111111111111111111111111111",
+  "synced_slot": 298418293,
+  "reserves": {
+    "base": "1010000000000",
+    "quote": "1980392156863"
+  },
+  "uptime_seconds": 18492
+}

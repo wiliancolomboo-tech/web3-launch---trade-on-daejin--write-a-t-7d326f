@@ -1,0 +1,9 @@
+3/3 🌐 Why Daejin changes the game:
+
+Fair-launch markets shouldn't take hours to configure. With our open-source Daejin Orchestrator CLI, anyone can launch an audited, production-grade AMM pair in a single atomic transaction.
+
+Ready to trade? Connect your wallet:
+🔗 https://daejin.fi
+💻 Code: https://github.com/developer/daejin-market-orchestrator
+
+@DaejinProtocol @solana

@@ -1,0 +1,9 @@
+🚨 Introducing the Next-Gen Market Engine for @daejin_market on @Solana!
+
+We’ve just launched our production-ready Constant Product Invariant AMM & automated social market creation protocol.
+
+⚡ Sub-second settlement
+🛡️ MEV-resistant slippage guard
+📊 Instant on-chain liquidity
+
+Verified Market ID #9001 is now LIVE! 👇🧵

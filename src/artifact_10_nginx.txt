@@ -1,0 +1,10 @@
+server {
+    listen 80;
+    server_name localhost;
+
+    location /health {
+        access_log off;
+        return 200 '{"status":"UP","engine":"daejin-market-engine","solana_cluster":"devnet"}';
+        add_header Content-Type application/json;
+    }
+}

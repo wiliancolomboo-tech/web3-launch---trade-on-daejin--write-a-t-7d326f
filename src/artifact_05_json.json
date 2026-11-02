@@ -1,0 +1,24 @@
+{
+  "name": "daejin-enterprise-cli",
+  "version": "1.0.0",
+  "description": "Production Orchestration CLI & Event Daemon for Daejin Solana Markets",
+  "main": "dist/cli.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "ts-node src/cli.ts",
+    "daemon": "ts-node src/daemon.ts"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.30.1",
+    "@solana/spl-token": "^0.4.8",
+    "@solana/web3.js": "^1.95.3",
+    "axios": "^1.7.7",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "typescript": "^5.5.2",
+    "ts-node": "^10.9.2"
+  }
+}

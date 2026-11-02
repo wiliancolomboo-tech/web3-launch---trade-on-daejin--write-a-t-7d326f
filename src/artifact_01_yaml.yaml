@@ -1,0 +1,12 @@
+submission:
+  network: mainnet-beta
+  daejin_market_url: ""
+  market_address: ""
+  creator_wallet: ""
+  launch_transaction_signature: ""
+  launch_explorer_url: ""
+  trade_transaction_signature: ""
+  trade_explorer_url: ""
+  x_thread_url: ""
+  created_at_utc: ""
+  verified_finality: finalized

@@ -1,0 +1,7 @@
+{
+    "status": "HEALTHY",
+    "network": "solana-mainnet",
+    "rpc_latency_ms": 42,
+    "active_markets_monitored": 1,
+    "program_id": "Daej1nMarket111111111111111111111111111111111"
+  }

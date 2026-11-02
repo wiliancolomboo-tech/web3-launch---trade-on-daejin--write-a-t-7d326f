@@ -1,0 +1,30 @@
+flowchart TD
+    subgraph ClientLayer["Client & Operator Layer"]
+        A[Operator CLI / Cron Agent] -->|1. Sign & Submit Market Init| B[Solana RPC Gateway]
+        A -->|2. Trigger Social Broadcast| C[X / Twitter API Engine]
+    end
+
+    subgraph SolanaOnChain["Solana Cluster (Mainnet/Devnet)"]
+        B -->|3. Invoke Instruction| D[Daejin Core Program]
+        
+        subgraph ProgramState["Program State & Vaults"]
+            D -->|Initialize State| E[(Market PDA Account)]
+            D -->|Mint LP Tokens| F[(User LP ATA)]
+            D -->|Deposit Base/Quote| G[(Base Vault PDA)]
+            D -->|Deposit Base/Quote| H[(Quote Vault PDA)]
+            
+            I[Trader / Arbitrageur] -->|4. Swap Order| D
+            D -->|State Transition| E
+            D -->|Transfer Tokens| G
+            D -->|Transfer Tokens| H
+            D -->|Emit Anchor Event| J[Program Event Log]
+        end
+    end
+
+    subgraph EnterpriseIntegration["Off-Chain Telemetry & Ops"]
+        K[Daejin Monitoring Daemon] -->|5. WebSocket Subscription| J
+        K -->|Parse Event Logs| L{Event Type}
+        L -->|MarketCreated| M[Enterprise Webhook: Slack/Discord]
+        L -->|SwapExecuted| N[Prometheus / OpenTelemetry Metrics]
+        L -->|LiquidityAdded| M
+    end

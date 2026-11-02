@@ -1,0 +1,7 @@
+2/4 🛠 Under the hood:
+• Constant Product Binary Pricing ($k = x \cdot y$) with checked fixed-point math
+• Non-custodial escrow PDAs preventing counterparty drag
+• Deterministic settlement & 1:1 redemption pumps
+• Enterprise TypeScript automation pipeline with instant Discord alerts
+
+Zero stubs. Zero downtime. Built for production on @solana.

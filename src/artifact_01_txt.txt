@@ -1,0 +1,9 @@
++---------------------------------------------------------------------------------------+
+|                                  DAEJIN MARKET ENGINE                                 |
++---------------------------------------------------------------------------------------+
+|  On-Chain Protocol (Anchor/Solana)          Off-Chain Orchestrator & Telemetry        |
+|  - PDA-Governed Market Vaults               - Zero-Configuration Automation Daemon     |
+|  - Integer Safe-Math AMM Core               - Priority Fee & Compute Budget Optimizer |
+|  - Non-Custodial LP & Protocol Fees         - Real-Time Slack/Discord Alert Webhooks  |
+|  - Deterministic Resolution & Settlement    - Auto-Posting Social Engine Integration  |
++---------------------------------------------------------------------------------------+

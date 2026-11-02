@@ -1,0 +1,6 @@
+3/3 🌐 We’ve open-sourced the complete Anchor smart contract, integration CLI, test suite, and 1-click Docker orchestration.
+
+Explore the market & start trading:
+👉 https://daejin.trade
+
+Built for the future of on-chain speculation. @DaejinProtocol #Solana #DeFi #SolanaEcosystem

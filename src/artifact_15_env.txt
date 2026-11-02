@@ -1,0 +1,13 @@
+SOLANA_RPC_URL="https://api.devnet.solana.com"
+SOLANA_KEYPAIR_PATH="./id.json"
+DAEJIN_PROGRAM_ID="Daej1n1111111111111111111111111111111111111"
+COLLATERAL_MINT_ADDRESS=""
+
+# Enterprise Webhook (Discord/Slack)
+ENTERPRISE_WEBHOOK_URL="https://api.example.com/webhooks/alerts/placeholder"
+
+# Social Broadcaster API Keys (X v2 API)
+TWITTER_API_KEY="your_api_key"
+TWITTER_API_SECRET="your_api_secret"
+TWITTER_ACCESS_TOKEN="your_access_token"
+TWITTER_ACCESS_SECRET="your_access_token_secret"

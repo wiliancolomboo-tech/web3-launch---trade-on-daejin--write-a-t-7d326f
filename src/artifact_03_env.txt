@@ -1,0 +1,15 @@
+SOLANA_RPC_URL=https://api.devnet.solana.com
+SOLANA_KEYPAIR_PATH=./keys/deployer-keypair.json
+DAEJIN_PROGRAM_ID=Daej1nMarketCore111111111111111111111111111111
+COLLATERAL_MINT=4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU
+
+# Enterprise Social Credentials
+TWITTER_API_KEY=your_api_key
+TWITTER_API_SECRET=your_api_secret
+TWITTER_ACCESS_TOKEN=your_access_token
+TWITTER_ACCESS_SECRET=your_access_secret
+
+# Enterprise Notification Endpoints
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+RESEND_API_KEY=re_123456789

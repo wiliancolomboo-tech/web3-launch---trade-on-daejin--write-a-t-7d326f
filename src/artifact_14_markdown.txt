@@ -1,0 +1,7 @@
+2/3 ⚡ How it works under the hood on @DaejinProtocol:
+
+🔒 Pure PDA-custodied base & quote vaults (zero centralized ownership)
+📐 Mathematical invariant protection via Q64.64 fixed-point reserve ratios
+🤖 Real-time event telemetry streaming directly to Discord, Slack & X
+
+Check out the full open-source repo: https://github.com/daejin-org/daejin-flowengine

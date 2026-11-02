@@ -1,0 +1,5 @@
+flowchart LR
+    TokenA[Token A] --> Pool((Daejin AMM))
+    TokenB[Token B] --> Pool
+    Pool --> LP[Deterministic Constant-Product Curve]
+    Pool --> Hooks[Enterprise Webhook Telemetry]

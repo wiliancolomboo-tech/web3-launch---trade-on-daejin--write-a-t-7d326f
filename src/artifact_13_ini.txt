@@ -1,0 +1,13 @@
+# Network & RPC Configuration
+SOLANA_RPC_URL=https://api.devnet.solana.com
+SOLANA_KEYPAIR_PATH=/app/keys/id.json
+DAEJIN_PROGRAM_ID=Daej1nMarket11111111111111111111111111111111
+
+# Enterprise Telemetry Webhooks
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+ENTERPRISE_WEBHOOK_URL=https://webhook.yourorganization.com/api/events
+
+# Operational Parameters
+AUTO_TRADE_INTERVAL_MS=15000
+SLIPPAGE_TOLERANCE_BPS=100

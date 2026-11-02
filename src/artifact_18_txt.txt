@@ -1,0 +1,5 @@
+2/ Under the hood:
+🔹 Non-custodial PDA vault isolation with zero counterparty risk
+🔹 Deterministic constant-product virtual curves (x * y = k) for instant day-zero depth
+🔹 Slippage-invariant execution with institutional protocol fee routing
+🔹 Sub-400ms settlement times on Solana

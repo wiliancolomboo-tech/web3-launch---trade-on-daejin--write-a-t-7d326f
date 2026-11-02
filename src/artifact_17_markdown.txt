@@ -1,0 +1,8 @@
+2/3 📐 Why @DaejinMarkets matters for traders & LPs:
+
+• 30 BPS dynamic fee split ensures yield accrual directly to LP share tokens
+• Deterministic PDA-derived vaults isolate pool liabilities atomically
+• Sub-second settlements with real-time slippage protection against sandwich MEV
+
+Initial liquidity is locked and verifiable on-chain:
+https://explorer.solana.com/tx/YOUR_TX_HASH?cluster=devnet 💧📊

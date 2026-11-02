@@ -1,0 +1,9 @@
+3/3 Ready to create, seed, and trade your own markets on Daejin?
+
+Our turnkey CLI & Dockerized orchestration engine lets developers launch markets in 1 command:
+`npx daejin-cli create-market --name SOL-PERP`
+
+Check out the verified contract repo and start trading today:
+github.com/daejin-market/core 🚀
+
+cc @daejin_market @Solana

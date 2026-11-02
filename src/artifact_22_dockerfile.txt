@@ -1,0 +1,25 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /usr/src/app
+
+COPY client/package*.json ./
+RUN npm ci
+
+COPY client/tsconfig.json ./
+COPY client/src ./src
+RUN npm run build
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+COPY client/package*.json ./
+RUN npm ci --only=production
+
+COPY --from=builder /usr/src/app/dist ./dist
+
+# Create operational health check endpoint
+EXPOSE 8080
+
+CMD ["node", "dist/index.js"]

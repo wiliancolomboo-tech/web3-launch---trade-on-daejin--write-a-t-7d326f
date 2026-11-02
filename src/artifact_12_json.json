@@ -1,0 +1,8 @@
+{
+  "timestamp": "2025-02-15T12:00:00.000Z",
+  "service": "daejin-market-engine",
+  "status": "HEALTHY",
+  "chain_id": "solana-devnet",
+  "program_id": "Daej1nMarketEng1ne111111111111111111111111111",
+  "rpc_latency_ms": 42
+}

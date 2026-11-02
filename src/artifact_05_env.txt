@@ -1,0 +1,11 @@
+SOLANA_RPC_URL="https://api.mainnet-beta.solana.com"
+SOLANA_PRIVATE_KEY="[1,2,3,...]" # 64-byte array format
+COLLATERAL_MINT="EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" # Mainnet USDC
+MARKET_QUESTION="Will Solana exceed 100,000 TPS on Firedancer Mainnet in 2025?"
+DURATION_SECONDS=1209600 # 14 days
+INITIAL_SEED_AMOUNT=100000000 # 100 USDC
+SLACK_WEBHOOK_URL="https://api.example.com/webhooks/alerts/placeholder"
+TWITTER_API_KEY="your_api_key"
+TWITTER_API_SECRET="your_api_secret"
+TWITTER_ACCESS_TOKEN="your_access_token"
+TWITTER_ACCESS_SECRET="your_access_token_secret"

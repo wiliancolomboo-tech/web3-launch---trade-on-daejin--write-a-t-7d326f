@@ -1,0 +1,14 @@
+# Solana Network Configuration
+SOLANA_RPC_URL="https://api.devnet.solana.com"
+SOLANA_CLUSTER="devnet"
+WALLET_KEYPAIR_PATH="./id.json"
+
+# Enterprise Ops Alert Webhook (Discord / Slack)
+ENTERPRISE_WEBHOOK_URL="https://api.example.com/webhooks/alerts/placeholder"
+
+# Twitter / X API v2 Credentials
+TWITTER_API_KEY="your_api_key"
+TWITTER_API_SECRET="your_api_secret"
+TWITTER_ACCESS_TOKEN="your_access_token"
+TWITTER_ACCESS_SECRET="your_access_secret"
+ENABLE_TWITTER_POSTING="true"

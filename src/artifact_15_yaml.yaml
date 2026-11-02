@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  daejin-daemon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daejin-market-worker
+    restart: unless-stopped
+    environment:
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - PROGRAM_ID=Daej1n1111111111111111111111111111111111111
+      - KEYPAIR_PATH=/secrets/id.json
+      - TELEMETRY_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+    volumes:
+      - ./secrets:/secrets:ro
+    healthcheck:
+      test: ["CMD-SHELL", "node -e 'console.log(process.uptime())'"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

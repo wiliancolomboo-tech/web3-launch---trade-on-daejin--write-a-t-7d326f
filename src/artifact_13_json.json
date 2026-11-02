@@ -1,0 +1,25 @@
+{
+  "name": "daejin-automation-client",
+  "version": "1.0.0",
+  "description": "Enterprise Orchestration & Automation Worker for Daejin Protocol",
+  "main": "index.ts",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "market:create": "ts-node index.ts create",
+    "market:trade": "ts-node index.ts trade",
+    "market:resolve": "ts-node index.ts resolve"
+  },
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.30.1",
+    "@solana/spl-token": "^0.4.8",
+    "@solana/web3.js": "^1.95.2",
+    "axios": "^1.7.2",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2"
+  }
+}

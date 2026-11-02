@@ -1,0 +1,8 @@
+Under the hood of our @Daejin engine:
+
+1️⃣ Zero-trust PDA vault custody for USDC collateral
+2️⃣ Constant product bonding mechanics with dynamic BPS creator fee splits
+3️⃣ Microsecond slippage guards preventing front-running
+4️⃣ Full Anchor test suite with 100% assertions passing
+
+Capital efficiency meets peak Solana throughput. 🛡️📈

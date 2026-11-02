@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  daejin-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daejin-autonomous-engine
+    restart: always
+    environment:
+      - NODE_ENV=production
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - KEYPAIR_PATH=/secrets/id.json
+      - PROGRAM_ID=Daej1nMarketEng1ne11111111111111111111111111
+      - WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+      - PORT=8080
+    volumes:
+      - ./secrets:/secrets:ro
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3

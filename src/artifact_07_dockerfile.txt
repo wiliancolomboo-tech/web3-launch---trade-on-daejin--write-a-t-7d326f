@@ -1,0 +1,33 @@
+FROM node:20-bullseye-slim
+
+WORKDIR /workspace
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    pkg-config \
+    libudev-dev \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Rust and Solana CLI
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+RUN sh -c "$(curl -sSfL https://release.anza.xyz/v1.18.26/install)"
+ENV PATH="/root/.local/share/solana/install/active_release/bin:${PATH}"
+
+# Install Anchor CLI
+RUN cargo install --git https://github.com/coral-xyz/anchor --tag v0.30.1 anchor-cli --locked
+
+# Copy source repository
+COPY . /workspace
+
+# Install client dependencies
+RUN cd /workspace/client && npm install
+
+# Build Anchor Program
+RUN anchor build
+
+EXPOSE 8080
+CMD ["npm", "--prefix", "/workspace/client", "start"]

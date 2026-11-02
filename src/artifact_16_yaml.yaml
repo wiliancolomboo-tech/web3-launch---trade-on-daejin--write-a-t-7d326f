@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  daejin-orchestrator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daejin-orchestrator-worker
+    restart: always
+    environment:
+      - SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+      - SOLANA_KEYPAIR_PATH=/secrets/id.json
+      - TWITTER_API_KEY=${TWITTER_API_KEY}
+      - TWITTER_API_SECRET=${TWITTER_API_SECRET}
+      - TWITTER_ACCESS_TOKEN=${TWITTER_ACCESS_TOKEN}
+      - TWITTER_ACCESS_SECRET=${TWITTER_ACCESS_SECRET}
+      - NOTIFICATION_WEBHOOK_URL=${NOTIFICATION_WEBHOOK_URL}
+      - LOG_LEVEL=info
+      - PORT=8080
+    volumes:
+      - ./secrets:/secrets:ro
+    ports:
+      - "8080:8080"

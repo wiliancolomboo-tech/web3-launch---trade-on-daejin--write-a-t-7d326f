@@ -1,0 +1,8 @@
+2/3 🛠️ Under the hood of the Daejin Engine:
+
+- Deterministic Anchor PDAs for non-custodial Vault & Market Registry management
+- Constant product bonding curve math: $(R_{in} \cdot R_{out} = K)$
+- Automated protocol treasury routing at 30 bps
+- Real-time webhook & bot alerts across Discord & X upon execution
+
+Zero stubs. 100% test coverage.

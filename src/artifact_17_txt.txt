@@ -1,0 +1,8 @@
+The entire codebase is open-source, Dockerized, and production-ready for the @Daejin ecosystem.
+
+Launch your own market, trade with programmatic liquidity, and receive automated trade receipts in seconds.
+
+Check out the GitHub repo & deploy in 1 click:
+🔗 https://github.com/daejin-enterprise/daejin-market-engine
+
+#Solana #DeFi #PredictionMarkets #Daejin #Bounty

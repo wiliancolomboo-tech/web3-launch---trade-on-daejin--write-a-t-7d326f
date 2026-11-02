@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  daejin-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daejin-market-agent
+    restart: always
+    environment:
+      - SOLANA_RPC_URL=https://api.mainnet-beta.solana.com
+      - WALLET_KEYPAIR_PATH=/secrets/id.json
+      - DAEJIN_PROGRAM_ID=Daej1nMarket111111111111111111111111111111111
+      - DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+      - SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+      - TWITTER_BEARER_TOKEN=YOUR_TWITTER_BEARER_TOKEN
+    volumes:
+      - ./secrets/id.json:/secrets/id.json:ro
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "node -e 'process.exit(0)'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3

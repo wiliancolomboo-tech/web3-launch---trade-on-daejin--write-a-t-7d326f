@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  daejin-engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: daejin_market_engine
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - DAEJIN_PROGRAM_ID=Daejin1111111111111111111111111111111111111
+      - DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+      - RESEND_API_KEY=re_123456789abcdef
+      - ALERT_EMAIL=admin@protocol.com
+    volumes:
+      - /etc/solana/id.json:/root/.config/solana/id.json:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    ports:
+      - "8080:8080"
