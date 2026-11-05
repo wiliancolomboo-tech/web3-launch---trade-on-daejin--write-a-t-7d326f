@@ -13,5 +13,5 @@ TWITTER_ACCESS_SECRET=oauth_access_token_secret_here
 # Notification & Dispatch Hooks
 SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
 DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
-RESEND_API_KEY=re_1234567890abcdef
+RESEND_API_KEY=re_test_000000000000000000000000
 ALERT_EMAIL_RECIPIENT=investors@daejin.fi

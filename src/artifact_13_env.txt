@@ -4,7 +4,7 @@ KEYPAIR_PATH=./id.json
 
 # Enterprise Integrations
 DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
-RESEND_API_KEY=re_enterprise_key_here
+RESEND_API_KEY=re_test_000000000000000000000000
 ALERT_EMAIL_RECIPIENT=ops@enterprise-domain.com
 
 # Server Settings
